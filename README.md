@@ -1,4 +1,4 @@
-# MetaVault Protocol
+# maxAPY MetaVault Protocol
 
 > Professional cross-chain yield aggregation protocol built on ERC7540
 
