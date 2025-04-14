@@ -1,0 +1,73 @@
+#COPYRIGHT AND LICENSE NOTICE  (maxAPY v1.0)
+© 2025 VERIS LABS OÜ. All rights reserved. 
+
+## Definitions
+"Software" means the maxAPY protocol software, including but not limited to its source code, object code, APIs, interfaces, algorithms, mathematical models, documentation, user interfaces, graphics, designs, vault architecture, strategy implementations, and all other components, whether in human-readable or machine-executable form.
+"Protocol" means the deployed maxAPY yield optimization platform, including all smart contracts, on-chain logic, cross-chain messaging systems, oracle integrations, and related component systems operating on Ethereum, Polygon, and any other blockchain networks.
+
+## Proprietary Rights
+This software and associated documentation files (the "Software") are proprietary and confidential. Copyright laws and international copyright treaties protect the Software and other intellectual property laws and treaties. 
+
+## Prohibited Actions
+No part of this Software may be reproduced, distributed, transmitted, stored in a retrieval system, or translated into any human or computer language, in any form or by any means, electronic, mechanical, magnetic, optical, chemical, manual or otherwise, without the prior written permission of the copyright owner. 
+
+Specifically prohibited actions include, but are not limited to:
+
+Reverse engineering, decompiling, or disassembling the Software or Protocol
+Creating derivative works based on any part of the Software or Protocol
+Removing, altering, or obscuring any copyright notices or proprietary legends
+Accessing source code through any mechanism other than those explicitly provided
+Using automated tools to extract or analyze the Software's functionality or algorithms
+Attempting to bypass security measures or access controls
+
+## Web3-Specific Terms 
+The smart contracts, blockchain interactions, yield generation algorithms, and on-chain deployed code are also proprietary and subject to this license. Interaction with deployed protocol contracts through approved interfaces is permitted, but unauthorized forks, derivatives, or reimplementations of the protocol code are prohibited. 
+
+The smart contracts, blockchain interactions, yield generation algorithms, and on-chain deployed code, including but not limited to:
+MetaVault
+AssetsManager
+EmergencyAssetsManager
+MetaVaultAdmin
+MetaVaultReader
+ERC7540EngineBase
+ERC7540ProcessRedeemBase
+ERC7540Engine
+ERC7540EngineReader
+ERC7540EngineSignatures
+GatewayBase
+DivestSuperform
+InvestSuperform
+LiquidateSuperform
+SuperformGateway
+SuperPositionsReceiver
+ERC20Receiver
+
+All are proprietary and subject to this license. The mere fact that blockchain code is publicly visible does not grant any rights to copy, modify, or reuse such code beyond the limited permissions explicitly granted herein.
+
+Any protocol fees, yield mechanisms, or token economics implemented within this protocol are designed and controlled exclusively by VERIS LABS OÜ. 
+
+## Protocol Integrations
+Unauthorized copying, use, distribution, modification, public display, or public performance of this proprietary work is a violation of copyright law. 
+
+## Legal Remedies
+Unauthorized copying, use, distribution, modification, public display, or public performance of this proprietary work is a violation of copyright and intellectual property law. VERIS LABS OU reserves all rights to pursue appropriate legal remedies for any unauthorized use of the Software or Protocol, including but not limited to the following:
+
+Seeking injunctive relief
+Claiming damages for actual losses and/or statutory damages
+Recovering legal costs and attorney's fees
+Pursuing criminal charges where applicable
+
+## Governing Law
+This Copyright and License Notice shall be governed by and construed following the laws of Estonia without regard to its conflict of law provisions.
+
+## Third-Party Components 
+This software includes components licensed under the MIT License. These components maintain their original MIT license and are not subject to the proprietary terms above. 
+The MIT license notices for these components are preserved in their respective files and must be maintained in any distribution of this software.
+
+## Contact Information
+For licensing inquiries, partnership opportunities, or to request permissions beyond those granted in this notice, please contact:
+legal@verislabs.xyz
+
+
+
+
