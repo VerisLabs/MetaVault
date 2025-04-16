@@ -885,10 +885,10 @@ contract MetaVault is MetaVaultBase, Multicallable, NoDelegateCall {
                 if (controller != address(0)) {
                     // Decrease the pending xchain shares of the user
                     pendingProcessedShares[controller] = _sub0(pendingProcessedShares[controller], shares);
+                    // Mint back failed shares
+                    _mint(address(this), shares);
                 }
                 vaults[superformId].totalDebt += refundedAssets.toUint128();
-                // Mint back failed shares
-                _mint(address(this), shares);
             }
         }
         return this.onERC1155Received.selector;
