@@ -200,6 +200,11 @@ contract ModuleBase is OwnableRoles, ERC7540, ReentrancyGuard {
         return new uint256[](len);
     }
 
+    /// @notice the number of decimals of the underlying token
+    function _underlyingDecimals() internal view override returns (uint8) {
+        return _decimals;
+    }
+
     /// @notice Converts a fixed-size array to a dynamic array
     /// @param arr The fixed-size array to convert
     /// @param len The length of the new dynamic array

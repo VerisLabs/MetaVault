@@ -795,11 +795,6 @@ contract MetaVault is MetaVaultBase, Multicallable, NoDelegateCall {
         _afterDeposit(assets, 0);
     }
 
-    /// @notice the number of decimals of the underlying token
-    function _underlyingDecimals() internal view override returns (uint8) {
-        return _decimals;
-    }
-
     /// @notice Updates the average entry share price of a controller
     function _updatePosition(address controller, uint256 mintedShares) internal {
         uint256 averageEntryPrice = positions[controller];
