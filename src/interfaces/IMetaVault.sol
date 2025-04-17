@@ -154,7 +154,7 @@ interface IMetaVault {
 
     function withdraw(uint256 assets, address receiver, address controller) external returns (uint256 shares);
 
-    function positions(address) external view returns(uint256);
+    function positions(address) external view returns (uint256);
 
     function pendingRedeemRequest(address) external view returns (uint256);
 
