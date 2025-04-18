@@ -870,8 +870,7 @@ contract MetaVault is MetaVaultBase, Multicallable, NoDelegateCall {
         operator;
         value;
         if (msg.sender != address(gateway.superPositions())) revert Unauthorized();
-        if (from != address(gateway)) revert Unauthorized();
-        if (data.length > 0) {
+        if (data.length > 0 && from == address(gateway)) {
             (address controller, uint256 refundedAssets) = abi.decode(data, (address, uint256));
             if (refundedAssets != 0) {
                 _totalDebt += refundedAssets.toUint128();

@@ -3,6 +3,8 @@ pragma solidity ^0.8.19;
 
 import { ModuleBase } from "common/Lib.sol";
 import { SafeTransferLib } from "solady/utils/SafeTransferLib.sol";
+import { ISuperPositions } from "interfaces/Lib.sol";
+
 
 /// @title MigrationSender
 /// @author Unlockd
@@ -14,13 +16,19 @@ contract MigrationSender is ModuleBase {
     /// @notice Emitted when assets are migrated from this vault
     event MigrationPulled(address indexed receiver, uint256 assetAmount, uint256 shareSupply);
 
-    function pullMigration() external onlyRoles(EMERGENCY_ADMIN_ROLE) returns (bool) {
+    function pullMigration(ISuperPositions sp) external onlyRoles(EMERGENCY_ADMIN_ROLE) returns (bool) {
         require(emergencyShutdown == true, "sender vault must be paused");
         uint256 localBalance = asset().balanceOf(address(this));
         require(_totalIdle == localBalance, "claimable assets pending");
-        require(totalXChainAssets() == 0, "xchain assets invested");
-        require(totalLocalAssets() == _totalIdle, "local assets invested");
+        require(gateway.totalpendingXChainInvests() == 0, "pending invests");
+        require(gateway.totalPendingXChainDivests() == 0, "pending divests");
         asset().safeTransfer(msg.sender, localBalance);
+        sp.setApprovalForAll(msg.sender, true);
+        for(uint256 i=0; i<WITHDRAWAL_QUEUE_SIZE; i++){
+            uint256 id = localWithdrawalQueue[i];
+            if (id== 0)  break;
+            vaults[id].vaultAddress.safeApprove(msg.sender, type(uint256).max);
+        }
         emit MigrationPulled(msg.sender, localBalance, totalSupply());
         return true;
     }
