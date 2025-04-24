@@ -16,3 +16,4 @@ import { ISuperPositionsReceiver } from "./ISuperPositionsReceiver.sol";
 import { ISuperRegistry } from "./ISuperRegistry.sol";
 import { ISuperformFactory } from "./ISuperformFactory.sol";
 import { ISuperformGateway } from "./ISuperformGateway.sol";
+import { ISuperformRewardsDistributor } from "./ISuperformRewardsDistributor.sol";
