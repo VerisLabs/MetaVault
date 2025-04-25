@@ -376,4 +376,31 @@ interface IMetaVault {
     function getLastEpochVaultReturns() external view returns (VaultReturnsData memory);
 
     function totalReturnsPerShare() external view returns (int256);
+
+    struct SwapData {
+        address target;
+        bytes data;
+    }
+
+    function claimRewardsSuperform(
+        address rewardsDistributor,
+        uint256 periodId,
+        address[] memory rewardTokens,
+        uint256[] memory amountsClaimed,
+        bytes32[] memory proof,
+        SwapData[] memory swapDatas,
+        uint256[] memory minAmountsOut
+    )
+        external;
+
+    function batchClaimRewardsSuperform(
+        address rewardsDistributor,
+        uint256[] memory periodIds,
+        address[][] memory rewardTokens,
+        uint256[][] memory amountsClaimed,
+        bytes32[][] memory proofs,
+        SwapData[][] memory swapDatas,
+        uint256[][] memory minAmountsOut
+    )
+        external;
 }

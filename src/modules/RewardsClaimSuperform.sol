@@ -2,13 +2,19 @@
 pragma solidity ^0.8.19;
 
 import { ModuleBase } from "common/Lib.sol";
-import { SafeTransferLib } from "solady/utils/SafeTransferLib.sol";
-import { SafeCastLib } from "solady/utils/SafeCastLib.sol";
+
 import { ISuperformRewardsDistributor } from "interfaces/ISuperformRewardsDistributor.sol";
+import { SafeCastLib } from "solady/utils/SafeCastLib.sol";
+import { SafeTransferLib } from "solady/utils/SafeTransferLib.sol";
 
 /// @title RewardsClaimSuperform
 /// @notice Handles claiming, swapping, and donating rewards back to the MetaVault
 contract RewardsClaimSuperform is ModuleBase {
+    struct SwapData {
+        address target;
+        bytes data;
+    }
+
     using SafeTransferLib for address;
     using SafeCastLib for uint256;
 
@@ -44,15 +50,15 @@ contract RewardsClaimSuperform is ModuleBase {
     /// @param minAmountsOut Minimum amounts expected from swaps
     function claimRewardsSuperform(
         ISuperformRewardsDistributor rewardsDistributor,
-        uint256 periodId, 
-        address[] calldata rewardTokens, 
-        uint256[] calldata amountsClaimed, 
+        uint256 periodId,
+        address[] calldata rewardTokens,
+        uint256[] calldata amountsClaimed,
         bytes32[] calldata proof,
-        bytes[] calldata swapDatas,
+        SwapData[] calldata swapDatas,
         uint256[] calldata minAmountsOut
-    ) 
-        external 
-        onlyRoles(MANAGER_ROLE) 
+    )
+        external
+        onlyRoles(MANAGER_ROLE)
     {
         // Claim the rewards
         rewardsDistributor.claim(address(this), periodId, rewardTokens, amountsClaimed, proof);
@@ -76,11 +82,11 @@ contract RewardsClaimSuperform is ModuleBase {
         address[][] calldata rewardTokens,
         uint256[][] calldata amountsClaimed,
         bytes32[][] calldata proofs,
-        bytes[][] calldata swapDatas,
+        SwapData[][] calldata swapDatas,
         uint256[][] calldata minAmountsOut
-    ) 
-        external 
-        onlyRoles(MANAGER_ROLE) 
+    )
+        external
+        onlyRoles(MANAGER_ROLE)
     {
         // Batch claim rewards
         rewardsDistributor.batchClaim(address(this), periodIds, rewardTokens, amountsClaimed, proofs);
@@ -88,12 +94,7 @@ contract RewardsClaimSuperform is ModuleBase {
         // Process each period's rewards
         for (uint256 i = 0; i < periodIds.length; i++) {
             emit RewardsClaimedSuperform(periodIds[i], rewardTokens[i], amountsClaimed[i]);
-            _swapAndDonateSuperform(
-                rewardTokens[i], 
-                amountsClaimed[i], 
-                swapDatas[i], 
-                minAmountsOut[i]
-            );
+            _swapAndDonateSuperform(rewardTokens[i], amountsClaimed[i], swapDatas[i], minAmountsOut[i]);
         }
     }
 
@@ -103,12 +104,12 @@ contract RewardsClaimSuperform is ModuleBase {
     /// @param swapDatas Swap calldata for each token
     /// @param minAmountsOut Minimum expected amounts from swaps
     function _swapAndDonateSuperform(
-        address[] memory rewardTokens, 
+        address[] memory rewardTokens,
         uint256[] memory amounts,
-        bytes[] calldata swapDatas,
+        SwapData[] calldata swapDatas,
         uint256[] memory minAmountsOut
-    ) 
-        internal 
+    )
+        internal
     {
         uint256 totalDonated;
         address vaultAsset = asset();
@@ -125,14 +126,16 @@ contract RewardsClaimSuperform is ModuleBase {
             uint256 initialAssetBalance = vaultAsset.balanceOf(address(this));
 
             // Approve swap spender (assume first 20 bytes of swapData is the spender address)
-            rewardTokens[i].safeApprove(address(bytes20(swapDatas[i][0:20])), amounts[i]);
- 
+            rewardTokens[i].safeApprove(swapDatas[i].target, amounts[i]);
+
             // Perform the swap
-            (bool success, ) = address(bytes20(swapDatas[i][0:20])).call(swapDatas[i]);
-            
+            (bool success,) = address(swapDatas[i].target).call(swapDatas[i].data);
+
             if (!success) {
                 revert SwapFailedSuperform();
             }
+
+            rewardTokens[i].safeApprove(swapDatas[i].target, 0);
 
             // Check new asset balance
             uint256 newAssetBalance = vaultAsset.balanceOf(address(this));
