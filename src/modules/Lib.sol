@@ -7,3 +7,5 @@ import { EmergencyAssetsManager } from "./EmergencyAssetsManager.sol";
 
 import { MetaVaultAdmin } from "./MetaVaultAdmin.sol";
 import { MetaVaultReader } from "./MetaVaultReader.sol";
+
+import { SuperFrenRewardsManager } from "./SuperFrenRewardsManager.sol";

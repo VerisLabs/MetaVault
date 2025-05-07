@@ -334,4 +334,60 @@ interface IMetaVault {
     )
         external
         returns (bytes4);
+
+    function approvedNFTContracts(address nftContract) external view returns (bool);
+
+    function registeredFunctions(address targetContract, bytes4 functionSelector) external view returns (bool);
+
+    function addNFTContract(address _nftContract) external;
+
+    function removeNFTContract(address _nftContract) external;
+
+    function registerFunction(address _targetContract, bytes4 _functionSelector, string memory _name) external;
+
+    function removeFunction(address _targetContract, bytes4 _functionSelector) external;
+
+    function executeFunction(
+        address _targetContract,
+        bytes calldata _data,
+        uint256 _value
+    )
+        external
+        payable
+        returns (bool success, bytes memory returnData);
+
+    function claimNFT(
+        address _superFrenContract,
+        uint256 _editionId,
+        uint256 _tierId,
+        bytes32[] calldata _proof
+    )
+        external;
+
+    function batchClaimNFTs(
+        address _superFrenContract,
+        uint256[] calldata _editionIds,
+        uint256[] calldata _tierIds,
+        bytes32[][] calldata _proofs
+    )
+        external;
+
+    function forgeNFT(address _superFrenContract, uint256 _tierId) external;
+
+    function batchForgeNFTs(address _superFrenContract, uint256[] calldata _tierIds) external;
+
+    function getNFTBalance(address _superFrenContract, uint256 _tierId) external view returns (uint256);
+
+    function hasCompleteNFTSet(
+        address _superFrenContract,
+        uint256 _startTierId,
+        uint256 _count
+    )
+        external
+        view
+        returns (bool isComplete);
+
+    function emergencyWithdrawERC20(address _token, address _to, uint256 _amount) external;
+
+    function emergencyWithdrawERC1155(address _token, address _to, uint256 _id, uint256 _amount) external;
 }

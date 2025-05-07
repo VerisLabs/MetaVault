@@ -6,9 +6,9 @@ import { ModuleBase } from "common/Lib.sol";
 import { ERC1155 } from "solady/tokens/ERC1155.sol";
 import { SafeTransferLib } from "solady/utils/SafeTransferLib.sol";
 
-/// @title SuperFrenManager
+/// @title SuperFrenRewardsManager
 /// @notice Manages SuperFren NFTs for maxAPY vaults, enabling NFT minting, purchasing, holding and yield boosting
-contract SuperFrenManager is ModuleBase {
+contract SuperFrenRewardsManager is ModuleBase {
     using SafeTransferLib for address;
 
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
@@ -65,17 +65,11 @@ contract SuperFrenManager is ModuleBase {
     /*                          STORAGE                           */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
 
-    /// @notice Mapping of manager addresses to their authorization status
-    mapping(address => bool) public managers;
-
     /// @notice Mapping of SuperFrens NFT contracts that this manager can interact with
     mapping(address => bool) public approvedNFTContracts;
 
     /// @notice Maps target contract address => function selector => is registered
     mapping(address => mapping(bytes4 => bool)) public registeredFunctions;
-
-    /// @notice Maps target contract address => function selector => function name
-    mapping(address => mapping(bytes4 => string)) public functionNames;
 
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                         MODIFIERS                          */
@@ -99,13 +93,13 @@ contract SuperFrenManager is ModuleBase {
 
     /// @notice Add an approved SuperFrens NFT contract
     /// @param _nftContract The address of the SuperFrens contract
-    function addNFTContract(address _nftContract) external onlyRoles(MANAGER_ROLE) validAddress(_nftContract) {
+    function addNFTContract(address _nftContract) external onlyRoles(ADMIN_ROLE) validAddress(_nftContract) {
         approvedNFTContracts[_nftContract] = true;
     }
 
     /// @notice Remove a SuperFrens NFT contract from approved list
     /// @param _nftContract The address to remove
-    function removeNFTContract(address _nftContract) external onlyRoles(MANAGER_ROLE) {
+    function removeNFTContract(address _nftContract) external onlyRoles(ADMIN_ROLE) {
         approvedNFTContracts[_nftContract] = false;
     }
 
@@ -123,11 +117,10 @@ contract SuperFrenManager is ModuleBase {
         string memory _name
     )
         external
-        onlyRoles(MANAGER_ROLE)
+        onlyRoles(ADMIN_ROLE)
         validAddress(_targetContract)
     {
         registeredFunctions[_targetContract][_functionSelector] = true;
-        functionNames[_targetContract][_functionSelector] = _name;
 
         emit FunctionRegisteredSuperFren(_targetContract, _functionSelector, _name);
     }
@@ -135,9 +128,8 @@ contract SuperFrenManager is ModuleBase {
     /// @notice Remove a registered function
     /// @param _targetContract The contract address
     /// @param _functionSelector The function selector to remove
-    function removeFunction(address _targetContract, bytes4 _functionSelector) external onlyRoles(MANAGER_ROLE) {
+    function removeFunction(address _targetContract, bytes4 _functionSelector) external onlyRoles(ADMIN_ROLE) {
         registeredFunctions[_targetContract][_functionSelector] = false;
-        delete functionNames[_targetContract][_functionSelector];
 
         emit FunctionRemovedSuperFren(_targetContract, _functionSelector);
     }
@@ -354,7 +346,7 @@ contract SuperFrenManager is ModuleBase {
         uint256 _amount
     )
         external
-        onlyOwner
+        onlyRoles(MANAGER_ROLE)
         validAddress(_to)
     {
         (bool success, bytes memory data) =
@@ -377,7 +369,7 @@ contract SuperFrenManager is ModuleBase {
         uint256 _amount
     )
         external
-        onlyOwner
+        onlyRoles(MANAGER_ROLE)
         validAddress(_to)
     {
         ERC1155(_token).safeTransferFrom(address(this), _to, _id, _amount, "");

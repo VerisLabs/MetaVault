@@ -58,4 +58,28 @@ contract MetaVaultEvents {
 
     /// @dev Emitted when the performance fee is set
     event SetPerformanceFee(uint16 fee);
+
+    /// @notice Emitted when an NFT is claimed
+    event NFTClaimedSuperFren(address indexed superFrenContract, uint256 indexed editionId, uint256 indexed tierId);
+
+    /// @notice Emitted when an NFT is received
+    event NFTReceivedSuperFren(address indexed operator, address indexed from, uint256 indexed id, uint256 value);
+
+    /// @notice Emitted when multiple NFTs are received
+    event NFTBatchReceivedSuperFren(address indexed operator, address indexed from, uint256[] ids, uint256[] values);
+
+    /// @notice Emitted when NFTs are forged into higher tier
+    event NFTForgedSuperFren(address indexed superFrenContract, uint256 indexed tierId, uint256 indexed forgedTierId);
+
+    /// @notice Emitted when an emergency withdrawal occurs
+    event EmergencyWithdrawalSuperFren(address indexed token, address indexed recipient, uint256 amount);
+
+    /// @notice Emitted when a function is registered
+    event FunctionRegisteredSuperFren(address indexed targetContract, bytes4 indexed functionSelector, string name);
+
+    /// @notice Emitted when a function registration is removed
+    event FunctionRemovedSuperFren(address indexed targetContract, bytes4 indexed functionSelector);
+
+    /// @notice Emitted when a dynamic function is called
+    event DynamicFunctionCalledSuperFren(address indexed targetContract, bytes4 indexed functionSelector, bool success);
 }
