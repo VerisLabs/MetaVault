@@ -380,7 +380,7 @@ contract SuperFrenRewardsManager is ModuleBase {
     /// @notice Returns the function selectors for this module
     /// @return Array of function selectors
     function selectors() external pure returns (bytes4[] memory) {
-        bytes4[] memory s = new bytes4[](15);
+        bytes4[] memory s = new bytes4[](17);
         s[0] = this.addNFTContract.selector;
         s[1] = this.removeNFTContract.selector;
         s[2] = this.registerFunction.selector;
@@ -396,6 +396,8 @@ contract SuperFrenRewardsManager is ModuleBase {
         s[12] = this.onERC1155BatchReceived.selector;
         s[13] = this.emergencyWithdrawERC20.selector;
         s[14] = this.emergencyWithdrawERC1155.selector;
+        s[15] = this.approvedNFTContracts.selector; // Added the auto-generated getter
+        s[16] = this.registeredFunctions.selector;
         return s;
     }
 }
