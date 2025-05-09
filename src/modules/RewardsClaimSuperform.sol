@@ -118,7 +118,6 @@ contract RewardsClaimSuperform is ModuleBase {
             // Skip if reward token is already the vault asset
             if (rewardTokens[i] == vaultAsset) {
                 totalDonated += amounts[i];
-                vaultAsset.safeTransfer(address(this), amounts[i]);
                 continue;
             }
 
